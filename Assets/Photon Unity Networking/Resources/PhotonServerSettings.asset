@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
+  m_Name: PhotonServerSettings
+  HostType: 1
+  ServerAddress: app-us.exitgamescloud.com
+  ServerPort: 5055
+  AppID: dab7c868-d415-4c78-b18c-691f73b771e7
+  RpcList:
+  - SendChatMessage
+  - Marco
+  - Polo
+  - TaggedPlayer
+  - InstantiateRpc
+  - OnAwakeRPC
+  - DestroyRpc
+  DisableAutoOpenWizard: 0
