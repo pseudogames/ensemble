@@ -19,7 +19,7 @@ function FixedUpdate () {
 		nma.destination = target.transform.position;
 	} else {
 		gameObject.renderer.material.color = Color.red;
-		target.transform.localScale.y *= 0.95 + 0.05 * (1 - gameObject.transform.localScale.y); // the smaller the enemy, the less the damage
+		target.transform.localScale.y *= 0.98 + 0.02 * (1 - gameObject.transform.localScale.y); // the smaller the enemy, the less the damage
 		if(target.transform.localScale.y < 0.25) {
 			target.transform.localScale.y = 1;
 			target.transform.position = Vector3.up * 7;
