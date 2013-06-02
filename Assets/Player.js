@@ -1,6 +1,6 @@
 #pragma strict
 
-public var gun : ParticleSystem;
+public var gun : GameObject;
 public var damage : float = 0.05;
 public var mask : LayerMask;
 
@@ -10,7 +10,9 @@ function FixedUpdate () {
 	}
 	
 	if(Input.GetButton("Fire1")) {
-		gun.Play();
+		gun.particleSystem.Play();
+		gun.audio.volume = gun.audio.volume * 0.95 + 0.05 * 0.1; // max volume
+		
 		
 		var hit : RaycastHit;
 		var jitter : Vector3 = gun.transform.right * (Random.value - 0.5) + gun.transform.up * (Random.value - 0.5);
@@ -27,7 +29,8 @@ function FixedUpdate () {
         }
         
 	} else {
-		gun.Stop();
+		gun.particleSystem.Stop();
+		gun.audio.volume = gun.audio.volume * 0.9 + 0.1 * 0; // min volume
 	}
 
 	if(gameObject.transform.localScale.y < 1) {
