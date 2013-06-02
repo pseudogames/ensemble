@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440e74e55731846428521587d0b1ad33, type: 3}
   m_Name: 
   roomName: INFERNO
-  camera: {fileID: 1297561481}
+  cam: {fileID: 1297561481}
 --- !u!1 &1297561481
 GameObject:
   m_ObjectHideFlags: 0

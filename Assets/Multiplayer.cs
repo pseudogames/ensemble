@@ -10,7 +10,7 @@ public class Multiplayer : MonoBehaviour {
 	private State state;
 	private string message;
 	private GameObject player;
-	public GameObject camera;
+	public GameObject cam;
 	
 	void Start () {
 		PhotonNetwork.logLevel = PhotonLogLevel.Full;
@@ -27,9 +27,6 @@ public class Multiplayer : MonoBehaviour {
 	void OnGUI () {
 		switch(state) {
 		case State.SPLASH:
-			if(Input.GetKeyDown(KeyCode.Escape)) {
-				Application.Quit();
-			}
 			if(Input.anyKeyDown) {
 				state = State.SETUP;
 			}
@@ -54,7 +51,7 @@ public class Multiplayer : MonoBehaviour {
 		case State.PLAYING:
 			message = "room " + roomName + ", player "+ playerName + ", ping "+ PhotonNetwork.GetPing();
 			if(Input.GetKeyDown(KeyCode.Escape)) {
-				camera.transform.parent = null;
+				cam.transform.parent = null;
 				PhotonNetwork.Destroy(player);
 				StartPlayer ();
 			}
@@ -81,11 +78,13 @@ public class Multiplayer : MonoBehaviour {
 		player.AddComponent("MouseLook");
 		player.AddComponent("CharacterMotor");
 		player.AddComponent("FPSInputController");
-		camera.transform.parent = player.transform;
-		camera.transform.localPosition = Vector3.up;
-		camera.transform.rotation = Quaternion.identity;
+		player.AddComponent("Hunter");
+		cam.transform.parent = player.transform;
+		cam.transform.localPosition = Vector3.up;
+		cam.transform.rotation = Quaternion.identity;
+		
 	}
-	
+
 	private void OnPhotonCreateGameFailed() {
 		StartScreen("Failed to create the room");
 	}
