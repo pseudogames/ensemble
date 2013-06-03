@@ -22,4 +22,8 @@ MonoBehaviour:
   - InstantiateRpc
   - OnAwakeRPC
   - DestroyRpc
+  - Hit
+  - Pain
+  - TakePain
+  - TakeDamage
   DisableAutoOpenWizard: 0

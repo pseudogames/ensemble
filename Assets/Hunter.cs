@@ -6,6 +6,7 @@ public class Hunter : Photon.MonoBehaviour
     private Quaternion correctPlayerRot = Quaternion.identity;
     private Color correctPlayerColor = Color.white;
     private bool fire = false;
+	private int pain = 0;
 
     void Update()
     {
@@ -17,7 +18,8 @@ public class Hunter : Photon.MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, this.correctPlayerRot, Time.deltaTime * 5);
             renderer.material.color = Color.red * Mathf.Lerp(renderer.material.color.r, this.correctPlayerColor.r, Time.deltaTime * 5);
         }
-		renderer.material.color = fire ? Color.red : Color.white;
+		renderer.material.color = pain > 0 ? Color.black : fire ? Color.red : Color.white;
+		pain--;
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -26,7 +28,7 @@ public class Hunter : Photon.MonoBehaviour
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
-            stream.SendNext(fire);
+            stream.SendNext(fire); // TODO change to RPC
         }
         else
         {
@@ -35,4 +37,23 @@ public class Hunter : Photon.MonoBehaviour
             fire = (bool)stream.ReceiveNext();
         }
     }
+	
+    [RPC]
+    void TakeDamage()
+    {
+        pain = 5;
+		if(photonView.isMine) {
+			if(Random.value < 0.1) {
+				Debug.Log ("die");
+				PhotonNetwork.Destroy(photonView);
+			}
+		}
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit) {
+		if(fire && hit.gameObject.tag == "Player") {
+			(hit.gameObject.GetComponent("PhotonView") as PhotonView).RPC("TakeDamage", PhotonTargets.All);
+		}
+    }
+	
 }

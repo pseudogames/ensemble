@@ -78,11 +78,9 @@ public class Multiplayer : MonoBehaviour {
 		player.AddComponent("MouseLook");
 		player.AddComponent("CharacterMotor");
 		player.AddComponent("FPSInputController");
-		player.AddComponent("Hunter");
 		cam.transform.parent = player.transform;
 		cam.transform.localPosition = Vector3.up;
 		cam.transform.rotation = Quaternion.identity;
-		
 	}
 
 	private void OnPhotonCreateGameFailed() {

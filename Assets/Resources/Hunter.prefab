@@ -8,14 +8,14 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
-  - 143: {fileID: 14300000}
-  - 114: {fileID: 11400000}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400000}
+  - 136: {fileID: 13600000}
   m_Layer: 0
   m_Name: Hunter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.41836214, y: 2.66433191, z: -5.8257699}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -72,7 +72,7 @@ MonoBehaviour:
   prefixBackup: -1
   observed: {fileID: 11400002}
   synchronization: 1
-  onSerializeTransformOption: 4
+  onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   instantiationId: -1
 --- !u!114 &11400002
@@ -85,19 +85,18 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27c4070db7753a8459aff657d6bf3182, type: 3}
   m_Name: 
---- !u!143 &14300000
-CharacterController:
+--- !u!136 &13600000
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: .400000006
-  m_SlopeLimit: 45
-  m_StepOffset: .400000006
-  m_SkinWidth: .0500000007
-  m_MinMoveDistance: 0
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 3
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
