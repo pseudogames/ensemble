@@ -26,4 +26,6 @@ MonoBehaviour:
   - Pain
   - TakePain
   - TakeDamage
+  - FireStart
+  - FireStop
   DisableAutoOpenWizard: 0

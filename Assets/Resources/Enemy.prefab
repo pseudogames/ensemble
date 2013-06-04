@@ -13,6 +13,7 @@ GameObject:
   - 23: {fileID: 2300000}
   - 195: {fileID: 19500000}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400002}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -64,9 +65,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65d43816054723e4d8143b6a834da4fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 59ebf1b8b0735ba47a69e13575e2aa76, type: 3}
   m_Name: 
-  target: {fileID: 0}
+  spawn: {fileID: 0}
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  subId: 0
+  ownerId: 0
+  group: 0
+  prefixBackup: -1
+  observed: {fileID: 11400000}
+  synchronization: 1
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  instantiationId: 0
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
