@@ -9,7 +9,7 @@ public var persistence : float = 0.99;
 public var delay : float = 0.25;
 private var timeout : float = 0;
 
-private var max : float = 0;
+private var max : float = 0.00001;
 private var avg : float = 0;
 private var sum : float = 0;
 private var count : float = 0;
@@ -23,7 +23,7 @@ function Start () {
 function Spawn () {
 	var obj : GameObject = GameObject.Instantiate(prefab, gameObject.transform.position, gameObject.transform.rotation);
 	var enemy : Enemy = obj.GetComponent(Enemy) as Enemy;
-	enemy.target = target;
+	enemy.spawn = gameObject;
 	
 }
 
@@ -37,7 +37,7 @@ function OnAudioFilterRead(data:float[], channels:int) {
 }
 
 function Update() {
-	if(count) avg = sum / count;
+	if(count > 0) avg = sum / count;
 	sum = 0;
 	count = 0;
 	max *= persistence;
@@ -50,4 +50,8 @@ function Update() {
 		Spawn();
 	}
 	gameObject.renderer.material.color = (actuation*0.5+0.25) * Color.white;
+}
+
+function GetActuation() {
+	return actuation;
 }

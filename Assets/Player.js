@@ -3,13 +3,18 @@
 public var gun : GameObject;
 public var damage : float = 0.05;
 public var mask : LayerMask;
+private var fire : boolean = false;
 
 function FixedUpdate () {
 	if(Input.GetKeyDown(KeyCode.Escape)) {
 		Application.Quit();
 	}
 	
-	if(Input.GetButton("Fire1")) {
+	// flamethrower toggle
+	if(Input.GetButtonDown("Fire1")) fire = true;
+	if(Input.GetButtonDown("Fire2")) fire = false;
+		
+	if(fire) {
 		gun.particleSystem.Play();
 		gun.audio.volume = gun.audio.volume * 0.95 + 0.05 * 0.1; // max volume
 		
@@ -22,7 +27,6 @@ function FixedUpdate () {
         	Debug.DrawRay(gun.transform.position, direction * distance, Color.red, 0.1); 
         	hit.collider.transform.localScale.y *= (1 - damage);
     	    hit.collider.renderer.material.color = Color.black;
-    	    (hit.collider.GetComponent('NavMeshAgent') as NavMeshAgent).speed = 2*hit.collider.transform.localScale.y;
             if(hit.collider.transform.localScale.y < 0.25) {
 	        	Destroy(hit.transform.gameObject);
             }
