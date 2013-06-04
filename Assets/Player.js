@@ -11,10 +11,11 @@ function FixedUpdate () {
 	}
 	
 	// flamethrower toggle
-	if(Input.GetButtonDown("Fire1")) fire = true;
-	if(Input.GetButtonDown("Fire2")) fire = false;
+	if(Input.GetButtonDown("Fire1")) fire = !fire;
+	if(Input.GetButton("Fire2")) fire = false;
 		
-	if(fire) {
+	if(fire || Input.GetButton("Fire1")) {
+
 		gun.particleSystem.Play();
 		gun.audio.volume = gun.audio.volume * 0.95 + 0.05 * 0.1; // max volume
 		
