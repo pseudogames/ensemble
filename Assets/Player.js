@@ -4,12 +4,19 @@ public var gun : GameObject;
 public var damage : float = 0.05;
 public var mask : LayerMask;
 private var fire : boolean = false;
+private var stats : PlayerStats = new PlayerStats();
+
+function Start(){
+	stats.level = PlayerPrefs.GetInt("level");
+	stats.xp = PlayerPrefs.GetInt("xp");
+	stats.strength = PlayerPrefs.GetInt("strength");
+}
 
 function FixedUpdate () {
 	if(Input.GetKeyDown(KeyCode.Escape)) {
 		Application.Quit();
 	}
-	
+			
 	// flamethrower toggle
 	if(Input.GetButtonDown("Fire1")) fire = !fire;
 	if(Input.GetButton("Fire2")) fire = false;
@@ -27,9 +34,11 @@ function FixedUpdate () {
         if (Physics.Raycast(gun.transform.position, direction, hit, distance, mask)) {
         	Debug.DrawRay(gun.transform.position, direction * distance, Color.red, 0.1); 
         	hit.collider.transform.localScale.y *= (1 - damage);
-    	    hit.collider.renderer.material.color = Color.black;
+	   	    hit.collider.renderer.material.color = Color.black;
             if(hit.collider.transform.localScale.y < 0.25) {
+            	stats.addXP(2);
 	        	Destroy(hit.transform.gameObject);
+	        	Debug.Log(stats.getXP());
             }
         }
         
