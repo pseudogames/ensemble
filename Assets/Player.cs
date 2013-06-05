@@ -6,10 +6,10 @@ public class Player : Photon.MonoBehaviour {
 	public float damage = 0.05f;
 	public LayerMask mask;
 	private bool fire = false;
+	private bool bleeding = false;
 
 	private Vector3 correctPos = Vector3.zero;
 	private Quaternion correctRot = Quaternion.identity;
-	private Vector3 correctScale = Vector3.one;
 	
     void Update()
     {
@@ -17,7 +17,6 @@ public class Player : Photon.MonoBehaviour {
 		{
             transform.position = Vector3.Lerp(transform.position, this.correctPos, Time.deltaTime * 5);
             transform.rotation = Quaternion.Lerp(transform.rotation, this.correctRot, Time.deltaTime * 5);
-            transform.localScale = Vector3.Lerp(transform.localScale, this.correctScale, Time.deltaTime * 5);
         }
     }
 	
@@ -27,13 +26,11 @@ public class Player : Photon.MonoBehaviour {
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
-            stream.SendNext(transform.localScale);
         }
         else
         {
             this.correctPos = (Vector3)stream.ReceiveNext();
             this.correctRot = (Quaternion)stream.ReceiveNext();
-            this.correctScale = (Vector3)stream.ReceiveNext();
         }
     }
 	
@@ -57,24 +54,28 @@ public class Player : Photon.MonoBehaviour {
 				float distance = 6;
 		        if (Physics.Raycast(transform.position, direction, out hit, distance, mask)) {
 					Debug.DrawRay(transform.position, direction * distance, Color.red, 0.1f); 
-					(hit.collider.GetComponent("PhotonView") as PhotonView).RPC("TakeDamage", PhotonTargets.All, damage);
+					(hit.collider.GetComponent("PhotonView") as PhotonView).RPC("Burn", PhotonTargets.All, damage);
 		        }
 		        
 			} else {
 				photonView.RPC("FireStop", PhotonTargets.All);
 			}
-		
-			// healing
-			if(gameObject.transform.localScale.y < 1) {
-				float health = gameObject.transform.localScale.y * 0.99f + 0.01f;
-				float heal = health - gameObject.transform.localScale.y;
-				gameObject.transform.position += Vector3.up * heal;
-				Vector3 scale = gameObject.transform.localScale;
-				scale.y = health;
-				gameObject.transform.localScale = scale;
-				renderer.material.color = Color.white;
-			}
 		}
+
+		// healing
+		if(!bleeding && transform.localScale.y < 1) {
+			renderer.material.color = Color.white;
+
+			float health = transform.localScale.y * 0.99f + 0.01f;
+			float heal = health - transform.localScale.y;
+			
+			transform.position += Vector3.up * heal;
+			
+			Vector3 scale = transform.localScale;
+			scale.y = health;
+			transform.localScale = scale;
+		}
+		bleeding = false;
 	}
 
 	[RPC]
@@ -90,9 +91,9 @@ public class Player : Photon.MonoBehaviour {
 	}
 	
 	[RPC]
-	void TakeDamage (float damage) {
+	void Bitten (float damage) {
+		bleeding = true;
 		renderer.material.color = Color.black;
-		
 		if(photonView.isMine) {
 			Vector3 scale = transform.localScale;
 			scale.y = scale.y * (0.98f + 0.02f * (1.0f - damage)); // the smaller the enemy, the less the damage  // FIXME damage hardcoded

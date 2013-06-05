@@ -8,16 +8,16 @@ public class Enemy : Photon.MonoBehaviour {
 
 	
 	private Vector3 correctPos = Vector3.zero;
-	private Quaternion correctRot = Quaternion.identity;
 	private Vector3 correctScale = Vector3.one;
+	//private Quaternion correctRot = Quaternion.identity;
 	
     void Update()
     {
         if (!photonView.isMine)
 		{
             transform.position = Vector3.Lerp(transform.position, this.correctPos, Time.deltaTime * 5);
-            transform.rotation = Quaternion.Lerp(transform.rotation, this.correctRot, Time.deltaTime * 5);
             transform.localScale = Vector3.Lerp(transform.localScale, this.correctScale, Time.deltaTime * 5);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, this.correctRot, Time.deltaTime * 5);
         }
     }
 	
@@ -26,14 +26,14 @@ public class Enemy : Photon.MonoBehaviour {
         if (stream.isWriting)
         {
             stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
             stream.SendNext(transform.localScale);
+            //stream.SendNext(transform.rotation);
         }
         else
         {
             this.correctPos = (Vector3)stream.ReceiveNext();
-            this.correctRot = (Quaternion)stream.ReceiveNext();
             this.correctScale = (Vector3)stream.ReceiveNext();
+            //this.correctRot = (Quaternion)stream.ReceiveNext();
         }
     }
 	
@@ -46,6 +46,11 @@ public class Enemy : Photon.MonoBehaviour {
 	
 	void Restore () {
 		renderer.material.color = Color.white;
+		if(photonView.isMine) {
+			Vector3 scale = transform.localScale;
+			scale.x = scale.z = 1.0f;
+			transform.localScale = scale;
+		}
 	}
 	
 	void FixedUpdate () {
@@ -57,27 +62,34 @@ public class Enemy : Photon.MonoBehaviour {
 			
 			(GetComponent("NavMeshAgent") as NavMeshAgent).speed = 6.0f * effective; // FIXME speed hardcoded
 		
-			Vector3 scale = target.transform.localScale;
 			float distance = Vector3.Distance(target.transform.position, transform.position);
 			float touch = target.collider.bounds.extents.magnitude + collider.bounds.extents.magnitude;
-			float wide = 1.0f;
 			if(distance > touch*1.05) {
 				nma.destination = target.transform.position;
 			} else {
-				wide = 1f + effective;
-				renderer.material.color = Color.red;
-			
-				(target.GetComponent("PhotonView") as PhotonView).RPC("TakeDamage", PhotonTargets.All, effective);
+				photonView.RPC("Attack", PhotonTargets.All, effective);
+				(target.GetComponent("PhotonView") as PhotonView).RPC("Bitten", PhotonTargets.All, effective);
 			}
-			scale.x = scale.z = scale.z * 0.5f + 0.5f * wide;
-			transform.localScale = scale;
 		}
 	}
 	
 	[RPC]
-	void TakeDamage (float damage) {
-		renderer.material.color = Color.black;
+	void Attack (float damage) {
+		renderer.material.color = Color.red;
 		
+		if(photonView.isMine) {
+			float wide = 1f + damage;
+	
+			Vector3 scale = transform.localScale;
+			scale.x = scale.z = scale.z * 0.5f + 0.5f * wide;
+			transform.localScale = scale;
+		}
+	}
+
+	[RPC]
+	void Burn (float damage) {
+		renderer.material.color = Color.black;
+
 		if(photonView.isMine) {
 			Vector3 scale = transform.localScale;
 			scale.y = scale.y * (1.0f - damage);

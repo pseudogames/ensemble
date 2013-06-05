@@ -154,10 +154,10 @@ MonoBehaviour:
   group: 0
   prefixBackup: -1
   observed: {fileID: 11400000}
-  synchronization: 1
+  synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  instantiationId: 0
+  instantiationId: -1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -28,4 +28,7 @@ MonoBehaviour:
   - TakeDamage
   - FireStart
   - FireStop
+  - Attack
+  - Burn
+  - Bitten
   DisableAutoOpenWizard: 0

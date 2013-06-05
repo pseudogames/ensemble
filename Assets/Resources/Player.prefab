@@ -155,7 +155,6 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5aec2ab43227e0d46bdcd702db4d0c7a, type: 3}
   m_Name: 
-  cam: {fileID: 0}
   damage: .0500000007
   mask:
     serializedVersion: 2
@@ -175,7 +174,7 @@ MonoBehaviour:
   group: 0
   prefixBackup: -1
   observed: {fileID: 11400000}
-  synchronization: 1
+  synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   instantiationId: -1
