@@ -11,6 +11,14 @@ public class Player : Photon.MonoBehaviour {
 	private Vector3 correctPos = Vector3.zero;
 	private Quaternion correctRot = Quaternion.identity;
 	
+	void Start()
+	{
+		if(photonView.isMine) {
+			// TODO enable collision event emission on particleSystem only if photonView.isMine
+		}
+	}
+
+
     void Update()
     {
         if (!photonView.isMine)
@@ -45,18 +53,7 @@ public class Player : Photon.MonoBehaviour {
 			if(Input.GetButton("Fire2")) fire = false;
 				
 			if(fire || Input.GetButton("Fire1")) {
-		
 				photonView.RPC("FireStart", PhotonTargets.All);
-				
-				RaycastHit hit;
-				Vector3 jitter = transform.right * (Random.value - 0.5f) + transform.up * (Random.value - 0.5f);
-				Vector3 direction = transform.forward + jitter * 0.6f;
-				float distance = 6;
-		        if (Physics.Raycast(transform.position, direction, out hit, distance, mask)) {
-					Debug.DrawRay(transform.position, direction * distance, Color.red, 0.1f); 
-					(hit.collider.GetComponent("PhotonView") as PhotonView).RPC("Burn", PhotonTargets.All, damage);
-		        }
-		        
 			} else {
 				photonView.RPC("FireStop", PhotonTargets.All);
 			}
@@ -77,6 +74,16 @@ public class Player : Photon.MonoBehaviour {
 		}
 		bleeding = false;
 	}
+
+	void OnParticleCollision (GameObject other) {
+		if(photonView.isMine && other.layer == 8) { // me hitting enemy
+			PhotonView pv = other.GetComponent("PhotonView") as PhotonView;
+			if(pv) {
+				pv.RPC("Burn", PhotonTargets.All, damage);
+			}
+		}
+	}
+
 
 	[RPC]
 	void FireStart() {

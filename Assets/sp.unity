@@ -1367,6 +1367,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e87a7f2653782d349921a5673c72cac2, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   cam: {fileID: 506439846}
   spawnRadius: 10
 --- !u!1 &285220159
