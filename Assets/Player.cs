@@ -5,7 +5,8 @@ public class Player : Photon.MonoBehaviour {
 
 	public float damage = 0.05f;
 	public LayerMask mask;
-	private bool fire = false;
+	private bool want_fire = false;
+	private bool firing = false;
 	private bool bleeding = false;
 
 	private Vector3 correctPos = Vector3.zero;
@@ -49,13 +50,16 @@ public class Player : Photon.MonoBehaviour {
 	
 		if(photonView.isMine) {
 			// flamethrower toggle
-			if(Input.GetButtonDown("Fire1")) fire = !fire;
-			if(Input.GetButton("Fire2")) fire = false;
+			if(Input.GetButtonDown("Fire1")) want_fire = !want_fire;
+			if(Input.GetButton("Fire2")) want_fire = false;
 				
-			if(fire || Input.GetButton("Fire1")) {
-				photonView.RPC("FireStart", PhotonTargets.All);
-			} else {
-				photonView.RPC("FireStop", PhotonTargets.All);
+			if(firing != want_fire) {
+				firing = want_fire;
+				if(want_fire) {
+					photonView.RPC("FireStart", PhotonTargets.All);
+				} else {
+					photonView.RPC("FireStop", PhotonTargets.All);
+				}
 			}
 		}
 
